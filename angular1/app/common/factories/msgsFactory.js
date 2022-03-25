@@ -15,7 +15,7 @@
     }
 
     function addSuccess(msgs) {
-      assMsg(msg, 'Sucesso', 'success')
+      addMsg(msgs, 'Sucesso', 'success')
     }
 
     function addError(msgs) {

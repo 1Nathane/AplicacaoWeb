@@ -15,23 +15,23 @@
       const page = parseInt($location.search().page) || 1
       $http.get(`${url}?skip=${(page - 1) * 10}&limit=10`).then(function(response) {
         vm.billingCycle = {credits: [{}], debts: [{}]}
-        vm.billingCycles = response
+        vm.billingCycles = response.data
         vm.calculateValues()
 
 
         $http.get(`${url}/count`).then(function(response) {
-          vm.pages = Math.ceil(response.value / 10)
+          vm.pages = Math.ceil(response.data.value / 10)
           tabs.show(vm, {tabList: true, tabCreate: true})
         })
       })
     }
 
     vm.create = function() {
-      $http.post(url, vm.billingCycles).then(function(response) {
+      $http.post(url, vm.billingCycle).then(function(response) {
         vm.refresh()
         msgs.addSuccess('Operação realizada com sucesso!')
-      }).catch(function(data) {
-        msgs.addError(data.errors)
+      }).catch(function(response) {
+        msgs.addError(response.data.errors)
       })
     }
 
@@ -46,12 +46,12 @@
     }
 
     vm.update = function() {
-      const updateUrl = `${url}/${vm.billingCycle.id}`
+      const updateUrl = `${url}/${vm.billingCycle._id}`
       $http.put(updateUrl, vm.billingCycle).then(function(response) {
         vm.refresh()
         msgs.addSuccess('Operação realizada com sucesso!')
-      }).catch(function(data){
-        msgs.addError(data.errors)
+      }).catch(function(response){
+        msgs.addError(response.data.errors)
       })
     }
 
@@ -60,8 +60,8 @@
       $http.delete(deleteUrl, vm.billingCycle).then(function(response) {
         vm.refresh()
         msgs.addSuccess('Operação realizada com sucesso!')
-      }).catch(function(data) {
-        msgs.addError(data.errors)
+      }).catch(function(response) {
+        msgs.addError(response.data.errors)
       })
     }
 
